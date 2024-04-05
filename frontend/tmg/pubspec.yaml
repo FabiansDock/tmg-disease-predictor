@@ -30,9 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http:
   image_picker:
-  another_flutter_splash_screen: 
+  http:
+  another_flutter_splash_screen:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -62,7 +62,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - assets/8l85ot.gif
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

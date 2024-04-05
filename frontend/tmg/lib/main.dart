@@ -5,10 +5,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,10 +18,11 @@ class MyApp extends StatelessWidget {
       // home: ImageUploadPage(),
       debugShowCheckedModeBanner: false,
       home: FlutterSplashScreen.gif(
+          backgroundColor: const Color.fromARGB(95, 255, 255, 255),
           gifPath: 'assets/8l85ot.gif',
-          gifWidth: 269,
-          gifHeight: 474,
-          nextScreen: ImageUploadPage(),
+          gifWidth: 600,
+          gifHeight: 600,
+          nextScreen: const ImageUploadPage(),
           duration: const Duration(milliseconds: 3515),
           onInit: () async {
             debugPrint("onInit");
@@ -33,6 +36,8 @@ class MyApp extends StatelessWidget {
 }
 
 class ImageUploadPage extends StatefulWidget {
+  const ImageUploadPage({super.key});
+
   @override
   _ImageUploadPageState createState() => _ImageUploadPageState();
 }
@@ -90,9 +95,9 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TMG Plant Disease Predictor'),
-        backgroundColor: Color.fromARGB(255, 3, 180, 95),
-        foregroundColor: Color.fromARGB(255, 255, 255, 197),
+        title: const Text('TMG Plant Disease Predictor'),
+        backgroundColor: const Color.fromARGB(255, 3, 180, 95),
+        foregroundColor:const Color.fromARGB(255, 255, 255, 197),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -100,31 +105,31 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               AnimatedOpacity(
-                duration: Duration(milliseconds: 800), // Duration of the animation
+                duration: const Duration(milliseconds: 800), // Duration of the animation
                 opacity: _isAnimated ? 1.0 : 0.0, // Set opacity based on animation trigger
                 child: _imageFile == null
-                    ? Text('No image selected.')
+                    ? const Text('No image selected.')
                     : Image.file(_imageFile!),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   _getImage(ImageSource.gallery);
                 },
-                child: Text('Pick Image from Gallery'),
+                child: const Text('Pick Image from Gallery'),
               ),
               ElevatedButton(
                 onPressed: () {
                   _getImage(ImageSource.camera);
                 },
-                child: Text('Take a Picture'),
+                child: const Text('Take a Picture'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _uploadImage,
-                child: Text('Upload Image and Send to API'),
+                child: const Text('Upload Image and Send to API'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _responseText == null
                   ? Container()
                   : Text(_responseText!),
