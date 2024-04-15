@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -18,19 +19,19 @@ class MyApp extends StatelessWidget {
       // home: ImageUploadPage(),
       debugShowCheckedModeBanner: false,
       home: FlutterSplashScreen.gif(
-          backgroundColor: const Color.fromARGB(95, 255, 255, 255),
-          gifPath: 'assets/8l85ot.gif',
-          gifWidth: 600,
-          gifHeight: 600,
-          nextScreen: const ImageUploadPage(),
-          duration: const Duration(milliseconds: 3515),
-          onInit: () async {
-            debugPrint("onInit");
-          },
-          onEnd: () async {
-            debugPrint("onEnd 1");
-          },
-        ),
+        backgroundColor: const Color.fromARGB(95, 255, 255, 255),
+        gifPath: 'assets/8l85ot.gif',
+        gifWidth: 600,
+        gifHeight: 600,
+        nextScreen: const ImageUploadPage(),
+        duration: const Duration(milliseconds: 3515),
+        onInit: () async {
+          debugPrint("onInit");
+        },
+        onEnd: () async {
+          debugPrint("onEnd 1");
+        },
+      ),
     );
   }
 }
@@ -71,7 +72,8 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
 
     // Prepare the request body
     var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
-    request.files.add(await http.MultipartFile.fromPath('image', _imageFile!.path));
+    request.files
+        .add(await http.MultipartFile.fromPath('image', _imageFile!.path));
 
     // Send the request
     var streamedResponse = await request.send();
@@ -86,7 +88,7 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
       });
     } else {
       setState(() {
-        _responseText = "Failed to upload image. Status code: ${response.statusCode}";
+        _responseText = "Please retake the image !";
       });
     }
   }
@@ -97,7 +99,7 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
       appBar: AppBar(
         title: const Text('TMG Plant Disease Predictor'),
         backgroundColor: const Color.fromARGB(255, 3, 180, 95),
-        foregroundColor:const Color.fromARGB(255, 255, 255, 197),
+        foregroundColor: const Color.fromARGB(255, 255, 255, 197),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -105,8 +107,11 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               AnimatedOpacity(
-                duration: const Duration(milliseconds: 800), // Duration of the animation
-                opacity: _isAnimated ? 1.0 : 0.0, // Set opacity based on animation trigger
+                duration: const Duration(
+                    milliseconds: 800), // Duration of the animation
+                opacity: _isAnimated
+                    ? 1.0
+                    : 0.0, // Set opacity based on animation trigger
                 child: _imageFile == null
                     ? const Text('No image selected.')
                     : Image.file(_imageFile!),
@@ -129,10 +134,26 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
                 onPressed: _uploadImage,
                 child: const Text('Upload Image and Send to API'),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
               _responseText == null
                   ? Container()
-                  : Text(_responseText!),
+                  : _responseText!.length > 50 ? Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                            'Disease Name: \n\t${jsonDecode(_responseText!)[2]['Disease Name']}\n\n'),
+                        Text(
+                            'Causitive Agent: \n\t${jsonDecode(_responseText!)[0]['causitive_agent']}\n\n'),
+                        Text(
+                            'Scientific Name: \n\t${jsonDecode(_responseText!)[0]['scientific_name']}\n\n'),
+                        Text(
+                            'Symptoms: \n\t${jsonDecode(_responseText!)[0]['symptoms']}\n\n'),
+                        Text(
+                            'Treatment: \n\t${jsonDecode(_responseText!)[0]['treatment']}\n\n'),
+                        Text(
+                            'Probability: \n\t${jsonDecode(_responseText!)[1]['Probability']}\n\n'),
+                      ],
+                    ): Text(_responseText!),
             ],
           ),
         ),
