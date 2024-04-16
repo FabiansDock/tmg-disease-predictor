@@ -48,7 +48,8 @@ class ImageUploadPage extends StatefulWidget {
 class _ImageUploadPageState extends State<ImageUploadPage> {
   File? _imageFile;
   String? _responseText;
-  PlantCategory? _plant;
+  PlantCategory? _plant = PlantCategory.grapes;
+  var fontColor = Colors.purple[900];
 
   final ImagePicker _picker = ImagePicker();
   bool _isAnimated = false;
@@ -84,7 +85,7 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
     request.files
         .add(await http.MultipartFile.fromPath('image', _imageFile!.path));
     request.fields['category'] = _plant!.index.toString();
-    
+
     // Send the request
     var streamedResponse = await request.send();
 
@@ -105,11 +106,12 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
 
   @override
   Widget build(BuildContext context) {
-    var fontColor = Colors.purple[900];
+    var infoColor = Colors.white;
     const fontSize = 20.0;
     const fontWeight = FontWeight.bold;
 
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 26, 26, 26),
       appBar: AppBar(
         title: const Text('TMG Plant Disease Predictor'),
         backgroundColor: const Color.fromARGB(255, 3, 180, 95),
@@ -121,53 +123,74 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               AnimatedOpacity(
-                duration: const Duration(
-                    milliseconds: 800), // Duration of the animation
-                opacity: _isAnimated
-                    ? 1.0
-                    : 0.0, // Set opacity based on animation trigger
+                duration: const Duration(milliseconds: 800),
+                opacity: _isAnimated ? 1.0 : 0.0,
                 child: _imageFile == null
                     ? const Text('No image selected.')
-                    : Image.file(_imageFile!),
+                    : Image.file(
+                        _imageFile!,
+                        width: 400,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ),
               ),
               ListTile(
-                title: const Text('Grapes'),
+                title: Text(
+                  'Grapes',
+                  style: TextStyle(color: Colors.purple[400]),
+                ),
                 leading: Radio<PlantCategory>(
                   value: PlantCategory.grapes,
                   groupValue: _plant,
                   onChanged: (PlantCategory? value) {
                     setState(() {
                       _plant = value;
+                      fontColor = Colors.purple[400];
+                      _responseText = null;
                     });
                   },
                 ),
               ),
               ListTile(
-                title: const Text('Mango'),
+                title: Text(
+                  'Mango',
+                  style: TextStyle(color: Colors.yellow[400]),
+                ),
                 leading: Radio<PlantCategory>(
                   value: PlantCategory.mango,
                   groupValue: _plant,
                   onChanged: (PlantCategory? value) {
                     setState(() {
                       _plant = value;
+                      fontColor = Colors.yellow[400];
+                      _responseText = null;
                     });
                   },
                 ),
               ),
               ListTile(
-                title: const Text('Tomato'),
+                title: Text(
+                  'Tomato',
+                  style: TextStyle(color: Colors.red[400]),
+                ),
                 leading: Radio<PlantCategory>(
                   value: PlantCategory.tomato,
                   groupValue: _plant,
                   onChanged: (PlantCategory? value) {
                     setState(() {
                       _plant = value;
+                      fontColor = Colors.red[400];
+                      _responseText = null;
                     });
                   },
                 ),
               ),
               const SizedBox(height: 30),
               ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.black),
+                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                ),
                 onPressed: () {
                   _getImage(ImageSource.gallery);
                   setState(() {
@@ -178,6 +201,10 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.black),
+                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                ),
                 onPressed: () {
                   _getImage(ImageSource.camera);
                   setState(() {
@@ -188,6 +215,10 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.black),
+                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                ),
                 onPressed: _uploadImage,
                 child: const Text('Predict the Disease'),
               ),
@@ -206,72 +237,97 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
                                 fontSize: fontSize,
                               ),
                             ),
-                            Text('\t${jsonDecode(_responseText!)[2]['Disease Name']}\n\n',
+                            Text(
+                              '\t${jsonDecode(_responseText!)[2]['Disease Name']}\n\n',
+                              style: TextStyle(
+                                color: infoColor,
+                              ),
                               textAlign: TextAlign.left,
                             ),
                             Text(
-                                'Causitive Agent:',
-                                style: TextStyle(
+                              'Causitive Agent:',
+                              style: TextStyle(
                                 color: fontColor,
                                 fontWeight: fontWeight,
                                 fontSize: fontSize,
-                                ),
-                            ),
-                            Text('\t${jsonDecode(_responseText!)[0]['causitive_agent']}\n\n',
-                                textAlign: TextAlign.left,
+                              ),
                             ),
                             Text(
-                                'Scientific Name:',
-                                style: TextStyle(
-                                color: fontColor,
-                                fontWeight: fontWeight,
-                                fontSize: fontSize,
-                                ),
-                            ),
-                            Text('\t${jsonDecode(_responseText!)[0]['scientific_name']}\n\n',
-                                textAlign: TextAlign.left,
+                              '\t${jsonDecode(_responseText!)[0]['causitive_agent']}\n\n',
+                              style: TextStyle(
+                                color: infoColor,
+                              ),
+                              textAlign: TextAlign.left,
                             ),
                             Text(
-                                'Symptoms:',
-                                style: TextStyle(
+                              'Scientific Name:',
+                              style: TextStyle(
                                 color: fontColor,
                                 fontWeight: fontWeight,
                                 fontSize: fontSize,
-                                ),
-                            ),
-                            Text('\t${jsonDecode(_responseText!)[0]['symptoms']}\n\n',
-                                textAlign: TextAlign.left,
+                              ),
                             ),
                             Text(
-                                'Treatment:',
-                                style: TextStyle(
-                                color: fontColor,
-                                fontWeight: fontWeight,
-                                fontSize: fontSize,
-                                ),
-                            ),
-                            Text('\t${jsonDecode(_responseText!)[0]['treatment']}\n\n',
-                                textAlign: TextAlign.left,
+                              '\t${jsonDecode(_responseText!)[0]['scientific_name']}\n\n',
+                              style: TextStyle(
+                                color: infoColor,
+                              ),
+                              textAlign: TextAlign.left,
                             ),
                             Text(
-                                'Probability:',
-                                style: TextStyle(
+                              'Symptoms:',
+                              style: TextStyle(
                                 color: fontColor,
                                 fontWeight: fontWeight,
                                 fontSize: fontSize,
-                                ),
+                              ),
                             ),
-                            Text('\t${(double.parse(jsonDecode(_responseText!)[1]['Probability'])*100).toStringAsFixed(2)} %\n\n',
-                                textAlign: TextAlign.left,
+                            Text(
+                              '\t${jsonDecode(_responseText!)[0]['symptoms']}\n\n',
+                              style: TextStyle(
+                                color: infoColor,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                            Text(
+                              'Treatment:',
+                              style: TextStyle(
+                                color: fontColor,
+                                fontWeight: fontWeight,
+                                fontSize: fontSize,
+                              ),
+                            ),
+                            Text(
+                              '\t${jsonDecode(_responseText!)[0]['treatment']}\n\n',
+                              style: TextStyle(
+                                color: infoColor,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                            Text(
+                              'Probability:',
+                              style: TextStyle(
+                                color: fontColor,
+                                fontWeight: fontWeight,
+                                fontSize: fontSize,
+                              ),
+                            ),
+                            Text(
+                              '\t${(double.parse(jsonDecode(_responseText!)[1]['Probability']) * 100).toStringAsFixed(2)} %\n\n',
+                              style: TextStyle(
+                                color: infoColor,
+                              ),
+                              textAlign: TextAlign.left,
                             ),
                           ],
                         )
                       : Text(
-                          jsonDecode(_responseText!)['message']+"😁😁😁",
-                          style: const TextStyle(
-                                fontWeight: fontWeight,
-                                fontSize: fontSize,
-                                ),
+                          jsonDecode(_responseText!)['message'] + "😁😁😁",
+                          style: TextStyle(
+                            color: infoColor,
+                            fontWeight: fontWeight,
+                            fontSize: fontSize,
+                          ),
                         ),
             ],
           ),
