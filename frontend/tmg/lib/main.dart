@@ -11,6 +11,7 @@ void main() {
   runApp(const MyApp());
 }
 
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -66,13 +67,7 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
   Future<void> _uploadImage() async {
     if (_imageFile == null) {
       setState(() {
-        _responseText = "Please select an image first.";
-      });
-      return;
-    }
-    if (_plant == null) {
-      setState(() {
-        _responseText = "Please select plant category.";
+        _responseText = '{"message": "Please select an image first."}';
       });
       return;
     }
@@ -97,9 +92,15 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
       setState(() {
         _responseText = response.body;
       });
-    } else {
+    } 
+    else if (response.statusCode == 500) {
       setState(() {
-        _responseText = "Please retake the image !";
+        _responseText = '{"message": "Server error !"}';
+      });
+    }
+    else {
+      setState(() {
+        _responseText = '{"message": "Please retake the image !"}';
       });
     }
   }
