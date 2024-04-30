@@ -1,16 +1,11 @@
-# System Features
+# App Description
 
-1. Leaf Image Capture:The app should allow users to capture clear images of plant
-   leaves using their device's camera.
-2. Image Processing:It should process leaf images to detect signs of disease,
-   including color changes, lesions, spots, or other abnormalities.
-3. Disease Identification:The app should identify the detected disease(s) based on
-   image analysis, matching symptoms with a database of known plant diseases.
-4. Symptom information:Provide users with detailed information about detected
-   diseases, including symptoms, causes, and recommended treatments.
-5. Database Integration:Integrate a comprehensive database of plant
-   diseases,symptoms, and treatments, regularly updated to provide accurate
-   information.
+TMG Disease Predictor is an android application that predicts the type of disease
+based on the selected plant category. Based on the disease type, we get the name of
+the disease, the causative agent, scientific name and the recommended ways for
+treatment. The symptoms provided as output help us to make sure that the disease
+predicted is truthy or not. The application even tells us whether the leaf is healthy
+or not.
 
 # Architecture
 
