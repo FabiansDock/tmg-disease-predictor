@@ -73,18 +73,24 @@ def predict():
             result = predictor('grape_disease_category',
                                image_path, class_names)
             prediction_id = class_names.index(result.get("Prediction"))
+            if result.get("Prediction") == 'Healthy':
+                prediction_id = -1
         case '1':
             class_names = ['Anthracnose',
                            'Healthy', 'Mango Powdery Mildew']
             result = predictor('mango_disease_category',
                                image_path, class_names)
             prediction_id = class_names.index(result.get("Prediction"))
+            if result.get("Prediction") == 'Healthy':
+                prediction_id = -1
         case '2':
             class_names = ['Bacterial Spot',
                            'Healthy', 'Tomato Yellow Leaf Curl Virus']
             result = predictor('tomato_disease_category',
                                image_path, class_names)
             prediction_id = class_names.index(result.get("Prediction"))
+            if result.get("Prediction") == 'Healthy':
+                prediction_id = -1
 
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
@@ -94,12 +100,12 @@ def predict():
 
     details = cursor.fetchall()
 
-    print(details)
-
     cursor.close()
     conn.close()
     os.remove(image_path)
-    return jsonify({**result, "Disease Name": details[0][1], "causitive_agent": details[0][2], "symptoms": details[0][3], "treatment": details[0][4]})
+    if details:
+        return jsonify({**result, "Disease Name": details[0][1], "causitive_agent": details[0][2], "symptoms": details[0][3], "treatment": details[0][4]})
+    return jsonify({"message": "Healthy"})
 
 
 if __name__ == '__main__':
