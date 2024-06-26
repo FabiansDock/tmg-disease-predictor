@@ -11,7 +11,6 @@ void main() {
   runApp(const MyApp());
 }
 
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -92,13 +91,11 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
       setState(() {
         _responseText = response.body;
       });
-    } 
-    else if (response.statusCode == 500) {
+    } else if (response.statusCode == 500) {
       setState(() {
         _responseText = '{"message": "Server error !"}';
       });
-    }
-    else {
+    } else {
       setState(() {
         _responseText = '{"message": "Please retake the image !"}';
       });
@@ -226,7 +223,7 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
               const SizedBox(height: 40),
               _responseText == null
                   ? Container()
-                  : _responseText!.length > 50
+                  : _responseText!.length > 100
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -239,7 +236,7 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
                               ),
                             ),
                             Text(
-                              '\t${jsonDecode(_responseText!)[2]['Disease Name']}\n\n',
+                              '\t${jsonDecode(_responseText!)['Disease Name']}\n\n',
                               style: TextStyle(
                                 color: infoColor,
                               ),
@@ -254,22 +251,7 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
                               ),
                             ),
                             Text(
-                              '\t${jsonDecode(_responseText!)[0]['causitive_agent']}\n\n',
-                              style: TextStyle(
-                                color: infoColor,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            Text(
-                              'Scientific Name:',
-                              style: TextStyle(
-                                color: fontColor,
-                                fontWeight: fontWeight,
-                                fontSize: fontSize,
-                              ),
-                            ),
-                            Text(
-                              '\t${jsonDecode(_responseText!)[0]['scientific_name']}\n\n',
+                              '\t${jsonDecode(_responseText!)['causitive_agent']}\n\n',
                               style: TextStyle(
                                 color: infoColor,
                               ),
@@ -284,7 +266,7 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
                               ),
                             ),
                             Text(
-                              '\t${jsonDecode(_responseText!)[0]['symptoms']}\n\n',
+                              '\t${jsonDecode(_responseText!)['symptoms']}\n\n',
                               style: TextStyle(
                                 color: infoColor,
                               ),
@@ -299,7 +281,7 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
                               ),
                             ),
                             Text(
-                              '\t${jsonDecode(_responseText!)[0]['treatment']}\n\n',
+                              '\t${jsonDecode(_responseText!)['treatment']}\n\n',
                               style: TextStyle(
                                 color: infoColor,
                               ),
@@ -314,7 +296,7 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
                               ),
                             ),
                             Text(
-                              '\t${(double.parse(jsonDecode(_responseText!)[1]['Probability']) * 100).toStringAsFixed(2)} %\n\n',
+                              '\t${(double.parse(jsonDecode(_responseText!)['Probability']) * 100).toStringAsFixed(2)} %\n\n',
                               style: TextStyle(
                                 color: infoColor,
                               ),
