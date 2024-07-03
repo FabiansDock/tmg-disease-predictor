@@ -9,7 +9,7 @@ or not.
 
 # Model Architecture
 
-![](/assets/model_architecture.png)
+![](/assets/tinyvgg_architecture.png)
 
 # Implementation
 
