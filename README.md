@@ -7,7 +7,11 @@ treatment. The symptoms provided as output help us to make sure that the disease
 predicted is truthy or not. The application even tells us whether the leaf is healthy
 or not.
 
-# Architecture
+# Model Architecture
+
+![](/assets/model_architecture.png)
+
+# Implementation
 
 ![](/assets/architecture.png)
 
