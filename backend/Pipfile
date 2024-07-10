@@ -7,7 +7,7 @@ name = "pypi"
 flask = "*"
 torch = "*"
 torchvision = "*"
-numpy = "1.23"
+numpy = "==1.23"
 
 [dev-packages]
 

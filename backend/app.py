@@ -75,22 +75,32 @@ def predict():
             prediction_id = class_names.index(result.get("Prediction"))
             if result.get("Prediction") == 'Healthy':
                 prediction_id = -1
+            if result.get("Prediction") == 'Leaf Blight':
+                prediction_id = 1
         case '1':
             class_names = ['Anthracnose',
                            'Healthy', 'Mango Powdery Mildew']
             result = predictor('mango_disease_category',
                                image_path, class_names)
             prediction_id = class_names.index(result.get("Prediction"))
+            if result.get("Prediction") == 'Anthracnose':
+                prediction_id = 2
             if result.get("Prediction") == 'Healthy':
                 prediction_id = -1
+            if result.get("Prediction") == 'Mango Powdery Mildew':
+                prediction_id = 3
         case '2':
             class_names = ['Bacterial Spot',
                            'Healthy', 'Tomato Yellow Leaf Curl Virus']
             result = predictor('tomato_disease_category',
                                image_path, class_names)
             prediction_id = class_names.index(result.get("Prediction"))
+            if result.get("Prediction") == 'Bacterial Spot':
+                prediction_id = 4
             if result.get("Prediction") == 'Healthy':
                 prediction_id = -1
+            if result.get("Prediction") == 'Tomato Yellow Leaf Curl Virus':
+                prediction_id = 5
 
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()

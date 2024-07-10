@@ -71,8 +71,10 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
       return;
     }
 
-    // API endpoint to upload the image
-    String apiUrl = "http://10.0.2.2:5000/predict";
+    String apiUrl = 'http://localhost:5000/predict';
+    if (Platform.isAndroid || Platform.isIOS) {
+      apiUrl = 'http://10.0.2.2:5000/predict';
+    }
 
     // Prepare the request body
     var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
